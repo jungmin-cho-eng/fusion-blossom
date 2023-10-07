@@ -68,6 +68,13 @@ class Profile:
     def average_job_time(self, unit_index):
         return self.sum_job_time(unit_index) / len(self.entries)
 
+    def max_decoding_time(self):
+        decode_arr = []
+        for entry in self.entries:
+            decode_arr.append(entry["events"]["decoded"])
+            
+        return max(decode_arr)
+
 class VertexRange:
     def __init__(self, start, end):
         self.range = (start, end)
