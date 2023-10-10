@@ -48,21 +48,28 @@ expectation: when partition_num is small, the performance should not be affected
     measurement rounds will the performance starts to degrade
 
 """
+# partition_num_vec = [1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 15, 17, 20]
 
-repeat_vec = [64, 72, 96]
-partition_num_vec = [e for e in repeat_vec]
-partition_num_vec += [e * 2 for e in repeat_vec]
-partition_num_vec += [e * 4 for e in repeat_vec]
-partition_num_vec += [e * 8 for e in repeat_vec]
-partition_num_vec += [e * 16 for e in repeat_vec]
-partition_num_vec += [e * 32 for e in repeat_vec]
-partition_num_vec += [e * 64 for e in repeat_vec]
+# partition_num_vec = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+# repeat_vec = [10, 15, 22, 33, 48, 64, 72, 96]
+# partition_num_vec += [e for e in repeat_vec]
+
+partition_num_vec = [1000]
+
+# repeat_vec = [64, 72, 96]
+# partition_num_vec = [e for e in repeat_vec]
+# partition_num_vec += [e * 2 for e in repeat_vec]
+# partition_num_vec += [e * 4 for e in repeat_vec]
+# partition_num_vec += [e * 8 for e in repeat_vec]
+# partition_num_vec += [e * 16 for e in repeat_vec]
+# partition_num_vec += [e * 32 for e in repeat_vec]
+# partition_num_vec += [e * 64 for e in repeat_vec]
 # also include previous ones for direct comparison
 # repeat_vec = [10, 15, 22, 33, 50, 75]
 # partition_num_vec += [75]
 # partition_num_vec += [e * 10 for e in repeat_vec]
 # partition_num_vec += [e * 100 for e in repeat_vec]
-partition_num_vec += [1000]
+# partition_num_vec += [1000]
 partition_num_vec.sort()
 print(partition_num_vec)
 benchmark_profile_path_vec = []
@@ -76,9 +83,9 @@ for partition_num in partition_num_vec:
         command += ["--code-type", "error-pattern-reader"]
         command += ["--code-config", f'{{"filename":"{syndrome_file_path}"}}']
         command += ["--primal-dual-type", "parallel"]
-        command += ["--primal-dual-config", '{"primal":{"thread_pool_size":64,"pin_threads_to_cores":true},"dual":{"thread_pool_size":64}}']  # keep using single thread
+        command += ["--primal-dual-config", '{"primal":{"thread_pool_size":48,"pin_threads_to_cores":true},"dual":{"thread_pool_size":48}}']  # keep using single thread
         command += ["--partition-strategy", "phenomenological-planar-code-time-partition"]
-        command += ["--partition-config", f'{{"partition_num":{partition_num},"enable_tree_fusion":true,"maximum_tree_leaf_size":64}}']
+        command += ["--partition-config", f'{{"partition_num":{partition_num},"enable_tree_fusion":true,"maximum_tree_leaf_size":48}}']
         command += ["--verifier", "none"]
         command += ["--benchmark-profiler-output", benchmark_profile_path]
         print(command)
